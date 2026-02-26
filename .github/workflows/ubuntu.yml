@@ -13,8 +13,17 @@ jobs:
       with:
         ssh_key: ${{ secrets.SSH_KEY }}
         key_file: id_ecdsa
+        
     - uses: actions/checkout@v2
+    
+    - name: Setup Git Config & Token
+      run: |
+        git config --global user.name "${{ secrets.GIT_NAME }}"
+        git config --global user.email "${{ secrets.GIT_EMAIL }}"
+        git config --global url."https://${{ secrets.GH_TOKEN }}@github.com/".insteadOf "https://github.com/"
+        
     - run: source ubuntu-run.sh
+    
     - name: Setup tmate session
       timeout-minutes: 340
       uses: mxschmitt/action-tmate@master
